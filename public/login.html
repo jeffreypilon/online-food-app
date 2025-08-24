@@ -4,11 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Online Food App</title>
-    <link href="../public/css/tailwind.css" rel="stylesheet">
+    <link href="css/tailwind.css" rel="stylesheet">
 </head>
 <body class="flex flex-col min-h-screen bg-gray-50">
     <!-- Header Inclusion -->
-    <div id="header-placeholder"></div>
+    <div id="header-container"></div>
+    <script>
+        fetch('/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error loading header:', error);
+                document.getElementById('header-container').innerHTML = '<p class="text-red-500 p-4">Error loading header</p>';
+            });
+    </script>
     
     <main class="flex-grow container mx-auto py-10 px-4">
         <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-md">
@@ -47,20 +58,16 @@
     </main>
     
     <!-- Footer Inclusion -->
-    <div id="footer-placeholder"></div>
-    
+    <div id="footer-container"></div>
     <script>
-        // Load header and footer components
-        fetch('../public/header.html')
+        fetch('/footer.html')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('header-placeholder').innerHTML = data;
-            });
-            
-        fetch('../public/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-placeholder').innerHTML = data;
+                document.getElementById('footer-container').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error loading footer:', error);
+                document.getElementById('footer-container').innerHTML = '<p class="text-red-500 p-4">Error loading footer</p>';
             });
     </script>
 </body>

@@ -8,23 +8,24 @@
 </head>
 <body class="flex flex-col min-h-screen bg-gray-50">
     <!-- Header -->
-    <header class="bg-blue-600 text-white shadow-md">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Online Food App</h1>
-            <nav>
-                <ul class="flex space-x-6">
-                    <li><a href="/" class="hover:underline">Home</a></li>
-                    <li><a href="/menu" class="hover:underline">Menu</a></li>
-                    <li><a href="/login" class="hover:underline">Login</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <!-- Include header from separate file -->
+    <div id="header-container"></div>
+    <script>
+        fetch('/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error loading header:', error);
+                document.getElementById('header-container').innerHTML = '<p class="text-red-500 p-4">Error loading header</p>';
+            });
+    </script>
 
     <!-- Main content -->
     <main class="flex-grow container mx-auto py-10 px-4">
         <div class="text-center mb-10">
-            <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome to Online Food App</h2>
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome to the Online Food Ordering Application</h2>
             <p class="text-gray-600 max-w-2xl mx-auto">Order your favorite food with just a few clicks. Browse our menu, add items to your cart, and enjoy a delicious meal delivered right to your doorstep.</p>
         </div>
         
@@ -36,10 +37,18 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-6">
-        <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2023 Online Food App. All rights reserved.</p>
-        </div>
-    </footer>
+    <div id="footer-container"></div>
+    <script>
+        fetch('/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-container').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error loading footer:', error);
+                document.getElementById('footer-container').innerHTML = '<p class="text-red-500 p-4">Error loading footer</p>';
+            });
+    </script>
 </body>
+</html>
 </html>

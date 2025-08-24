@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 
 // Login page route
 router.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../views/login.html'));
+  res.sendFile(path.join(__dirname, '../../login.html'));
 });
 
 // Catch-all route for any undefined routes

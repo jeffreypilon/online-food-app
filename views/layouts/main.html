@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}} - Online Food App</title>
+    <link href="/css/tailwind.css" rel="stylesheet">
+</head>
+<body class="flex flex-col min-h-screen bg-gray-50">
+    <!-- Header -->
+    {{> header}}
+
+    <!-- Main content -->
+    <main class="flex-grow container mx-auto py-10 px-4">
+        {{{body}}}
+    </main>
+
+    <!-- Footer -->
+    {{> footer}}
+</body>
+</html>
