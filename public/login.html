@@ -21,7 +21,7 @@
             });
     </script>
     
-    <div class="flex flex-grow">
+    <div class="flex flex-grow mt-16 mb-16">
         <!-- Left Navigation Bar -->
         <div id="left-nav-container"></div>
         <script>
@@ -36,7 +36,7 @@
                 });
         </script>
         
-        <main class="flex-grow container mx-auto py-10 px-4">
+        <main class="flex-grow container mx-auto py-10 px-4 ml-64">
             <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-md">
                 <div class="text-center mb-8">
                     <h1 class="font-bold text-2xl text-gray-800">Welcome back!</h1>
@@ -86,8 +86,8 @@
                 document.getElementById('footer-container').innerHTML = '<p class="text-red-500 p-4">Error loading footer</p>';
             });
     </script>
-    
-    <!-- Footer Inclusion -->
+</body>
+</html>
     <div id="footer-container"></div>
     <script>
         fetch('/footer.html')
