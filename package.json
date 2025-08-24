@@ -2,17 +2,21 @@
   "name": "online-food-app",
   "version": "1.0.0",
   "description": "Online Food Ordering Application",
-  "main": "src/server.js",
+  "main": "src/app.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
     "css:build": "tailwindcss -i ./src/css/input.css -o ./public/css/tailwind.css",
+    "tailwind:build": "tailwindcss -i ./src/css/input.css -o ./public/css/tailwind.css",
     "build": "npm run css:build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "ejs": "^3.1.9",
-    "express": "^4.21.2"
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "helmet": "^7.0.0",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22",
