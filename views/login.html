@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Online Food App</title>
+    <link href="../public/css/tailwind.css" rel="stylesheet">
+</head>
+<body class="flex flex-col min-h-screen bg-gray-50">
+    <!-- Header Inclusion -->
+    <div id="header-placeholder"></div>
+    
+    <main class="flex-grow container mx-auto py-10 px-4">
+        <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-md">
+            <div class="text-center mb-8">
+                <h1 class="font-bold text-2xl text-gray-800">Welcome back!</h1>
+                <p class="text-gray-600 mt-2">Enter your email address and password to access admin panel</p>
+            </div>
+            
+            <form class="space-y-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <input type="email" id="email" name="email" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           required>
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="password" name="password" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           required>
+                </div>
+                
+                <div class="flex space-x-4 pt-2">
+                    <button type="submit" 
+                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-200">
+                        Login
+                    </button>
+                    <button type="reset" 
+                            class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition duration-200">
+                        Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <!-- Footer Inclusion -->
+    <div id="footer-placeholder"></div>
+    
+    <script>
+        // Load header and footer components
+        fetch('../public/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+            });
+            
+        fetch('../public/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+    </script>
+</body>
+</html>

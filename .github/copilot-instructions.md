@@ -131,6 +131,9 @@ The application emphasizes form field validations to minimize manual errors. Whe
 
 ### Responsive Design
 - Use Tailwind CSS utility classes for responsive design
+- Apply Tailwind CSS to style the HTML elements, focusing on visual appeal, layout, and responsiveness
+- Use JavaScript to add dynamic features, such as interactive menus, form validations, real-time updating of cart items, and handling user events
+- Implement AJAX calls for loading menu items or sending data to the server without refreshing the page
 - Test on mobile, tablet, and desktop viewports
 - Follow mobile-first design principles
 

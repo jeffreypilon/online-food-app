@@ -1,0 +1,21 @@
+{
+  "name": "online-food-app",
+  "version": "1.0.0",
+  "description": "Online Food Ordering Application",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "css:build": "tailwindcss -i ./src/css/input.css -o ./public/css/tailwind.css",
+    "build": "npm run css:build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "tailwindcss": "^3.3.2"
+  }
+}
