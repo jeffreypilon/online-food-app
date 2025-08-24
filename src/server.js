@@ -19,6 +19,10 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/login.html'));
 });
 
+app.get('/menu', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/menu.html'));
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
