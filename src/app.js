@@ -9,7 +9,6 @@ const compression = require('compression');
 const app = express();
 
 // Environment variables
-const PORT = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Middleware
@@ -70,8 +69,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
+// Start server only if directly executed (not when required/imported)
 if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`Server running in ${NODE_ENV} mode on port ${PORT}`);
     console.log(`Visit http://localhost:${PORT} to access the application`);

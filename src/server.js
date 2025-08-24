@@ -10,20 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from public directory
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Routes
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
-});
-
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/login.html'));
-});
-
-app.get('/menu', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/menu.html'));
-});
-
-// Start server
+module.exports = app;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
