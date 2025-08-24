@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart | Online Food App</title>
+    <link href="css/tailwind.css" rel="stylesheet">
+</head>
+<body class="flex flex-col min-h-screen bg-gray-50">
+    <!-- Header Inclusion -->
+    <div id="header-container"></div>
+    <script>
+        fetch('/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error loading header:', error);
+                document.getElementById('header-container').innerHTML = '<p class="text-red-500 p-4">Error loading header</p>';
+            });
+    </script>
+
+    <div class="flex flex-grow">
+        <!-- Vertical Navigation Bar -->
+        <div class="w-64 bg-gray-800 text-white">
+            <nav class="mt-5 px-2">
+                <h2 class="text-lg font-medium mb-4 px-4">Menu</h2>
+                <ul>
+                    <li class="mb-2">
+                        <a href="/about" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
+                            <span class="mr-2">📄</span> About
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="/services" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
+                            <span class="mr-2">🍴</span> Services
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="/orders" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
+                            <span class="mr-2">📦</span> Your Orders
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="/wishlist" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
+                            <span class="mr-2">❤️</span> Wishlists
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="/cart" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors bg-gray-700">
+                            <span class="mr-2">🛒</span> Cart
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="/contact" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
+                            <span class="mr-2">📞</span> Contact
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main content -->
+        <main class="flex-grow container mx-auto py-10 px-4">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8">Your Cart</h1>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="text-left border-b border-gray-300">
+                                <th class="pb-4">Item</th>
+                                <th class="pb-4">Quantity</th>
+                                <th class="pb-4">Price</th>
+                                <th class="pb-4">Total</th>
+                                <th class="pb-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Cart Item 1 -->
+                            <tr class="border-b border-gray-200">
+                                <td class="py-4">
+                                    <div class="flex items-center">
+                                        <img src="images/pizza.jpg" alt="Pizza" class="w-16 h-16 object-cover rounded mr-4">
+                                        <span class="font-medium">Margherita Pizza</span>
+                                    </div>
+                                </td>
+                                <td class="py-4">
+                                    <div class="flex items-center">
+                                        <button class="bg-gray-200 px-2 rounded-l">-</button>
+                                        <input type="text" value="1" class="w-12 text-center border-t border-b border-gray-200">
+                                        <button class="bg-gray-200 px-2 rounded-r">+</button>
+                                    </div>
+                                </td>
+                                <td class="py-4">$12.99</td>
+                                <td class="py-4 font-medium">$12.99</td>
+                                <td class="py-4">
+                                    <button class="text-red-500 hover:text-red-700">Remove</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Cart Item 2 -->
+                            <tr>
+                                <td class="py-4">
+                                    <div class="flex items-center">
+                                        <img src="images/pasta.jpg" alt="Pasta" class="w-16 h-16 object-cover rounded mr-4">
+                                        <span class="font-medium">Spaghetti Carbonara</span>
+                                    </div>
+                                </td>
+                                <td class="py-4">
+                                    <div class="flex items-center">
+                                        <button class="bg-gray-200 px-2 rounded-l">-</button>
+                                        <input type="text" value="2" class="w-12 text-center border-t border-b border-gray-200">
+                                        <button class="bg-gray-200 px-2 rounded-r">+</button>
+                                    </div>
+                                </td>
+                                <td class="py-4">$11.99</td>
+                                <td class="py-4 font-medium">$23.98</td>
+                                <td class="py-4">
+                                    <button class="text-red-500 hover:text-red-700">Remove</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-8 flex justify-between items-center">
+                    <div class="text-lg font-bold">
+                        Total: $36.97
+                    </div>
+                    <div class="space-x-4">
+                        <a href="/menu" class="inline-block bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300 transition">
+                            Continue Shopping
+                        </a>
+                        <a href="/checkout" class="inline-block bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                            Checkout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+    <script>
+        fetch('/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-container').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error loading footer:', error);
+                document.getElementById('footer-container').innerHTML = '<p class="text-red-500 p-4">Error loading footer</p>';
+            });
+    </script>
+</body>
+</html>
