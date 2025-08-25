@@ -111,6 +111,13 @@ const findUserByEmail = (email) => {
     return users.find(user => user.getEmail() === email);
 };
 
+const findUserByEmailAndPassword = (email, password) => {
+    return users.find(user => 
+        user.getEmail() === email && 
+        user.getPassword() === password
+    );
+};
+
 const createUser = (firstName, lastName, email, password) => {
     // Check if user already exists
     if (findUserByEmail(email)) {
@@ -125,5 +132,6 @@ const createUser = (firstName, lastName, email, password) => {
 module.exports = {
     User,
     findUserByEmail,
+    findUserByEmailAndPassword,
     createUser
 };
