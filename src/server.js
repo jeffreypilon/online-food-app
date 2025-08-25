@@ -1,15 +1,15 @@
-const express = require('express');
-const path = require('path');
-const app = express();
+/**
+ * Main server entry point that delegates to app.js
+ * This is a simple wrapper that loads the app and starts the server
+ */
+const app = require('./app');
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Serve static files from public directory
-app.use(express.static(path.join(__dirname, '../public')));
-
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Visit http://localhost:${PORT} to access the application`);
+});
 module.exports = app;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

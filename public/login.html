@@ -88,17 +88,3 @@
     </script>
 </body>
 </html>
-    <div id="footer-container"></div>
-    <script>
-        fetch('/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-container').innerHTML = data;
-            })
-            .catch(error => {
-                console.error('Error loading footer:', error);
-                document.getElementById('footer-container').innerHTML = '<p class="text-red-500 p-4">Error loading footer</p>';
-            });
-    </script>
-</body>
-</html>
