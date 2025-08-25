@@ -151,6 +151,8 @@
 
             // Form submission validation
             loginForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Always prevent default to handle manually
+                
                 let isValid = true;
                 
                 // Validate email
@@ -167,9 +169,64 @@
                     isValid = false;
                 }
                 
-                // Prevent form submission if validation fails
-                if (!isValid) {
-                    event.preventDefault();
+                // If form is valid, submit data to server
+                if (isValid) {
+                    // Prepare data for sending
+                    const userData = {
+                        email: emailInput.value,
+                        password: passwordInput.value
+                    };
+                    
+                    // Send POST request to auth route
+                    fetch('/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(userData)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Login failed');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            // Login successful
+                            console.log('Login successful:', data);
+                            // Store user info if needed
+                            localStorage.setItem('user', JSON.stringify({
+                                email: data.data.email,
+                                name: data.data.name,
+                                role: data.data.role
+                            }));
+                            // Redirect to home or dashboard
+                            window.location.href = '/';
+                        } else {
+                            // Login failed with server validation error
+                            throw new Error(data.message || 'Login failed');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        
+                        // Remove any existing login error message
+                        const existingError = document.getElementById('loginError');
+                        if (existingError) {
+                            existingError.remove();
+                        }
+                        
+                        // Create error message with same styling as validation errors
+                        const loginError = document.createElement('p');
+                        loginError.id = 'loginError';
+                        loginError.className = 'text-red-500 text-sm mt-4';
+                        loginError.textContent = `Login failed: ${error.message}`;
+                        
+                        // Add error message after the form buttons
+                        const buttonContainer = loginForm.querySelector('.flex.space-x-4');
+                        buttonContainer.parentNode.insertBefore(loginError, buttonContainer.nextSibling);
+                    });
                 }
             });
 

@@ -102,7 +102,8 @@ class User {
 // Mock database of users (for development purposes)
 const users = [
     new User('Admin', 'User', 'admin@example.com', 'Admin123!'),
-    new User('John', 'Doe', 'john.doe@example.com', 'Password123!')
+    new User('John', 'Doe', 'john.doe@example.com', 'Password456!'),
+    new User('Jeff', 'Jones', 'jeffjones@yahoo.com', 'Password123!')
 ];
 
 // User related functions
