@@ -5,8 +5,45 @@
             <ul class="flex space-x-6">
                 <li><a href="/" class="hover:underline">Home</a></li>
                 <li><a href="/menu" class="hover:underline">Menu</a></li>
-                <li><a href="/login" class="hover:underline">Login</a></li>
+                <li id="auth-link"><a href="/login" class="hover:underline">Login</a></li>
             </ul>
         </nav>
     </div>
 </header>
+
+<script>
+    // Check if user is logged in
+    document.addEventListener('DOMContentLoaded', function() {
+        const authLink = document.getElementById('auth-link');
+        const user = localStorage.getItem('user');
+        
+        if (user) {
+            // User is logged in, show logout link
+            authLink.innerHTML = '<a href="#" id="logout-btn" class="hover:underline">Logout</a>';
+            
+            // Add logout functionality
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Call logout API
+                fetch('/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Clear user data from localStorage
+                    localStorage.removeItem('user');
+                    
+                    // Redirect to home page
+                    window.location.href = '/';
+                })
+                .catch(error => {
+                    console.error('Logout failed:', error);
+                });
+            });
+        }
+    });
+</script>

@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
+const session = require('express-session');
 
 // Initialize express app
 const app = express();
@@ -18,6 +19,17 @@ app.use(helmet({ contentSecurityPolicy: false })); // Security headers
 app.use(compression()); // Compress responses
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+
+// Session configuration
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'online-food-app-secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    secure: NODE_ENV === 'production', 
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
 
 // Serve static files from public directory
 app.use(express.static(path.join(__dirname, '../public')));
