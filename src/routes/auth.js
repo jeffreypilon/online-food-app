@@ -5,7 +5,7 @@ const router = express.Router();
 const users = [
   { id: 1, email: 'admin@example.com', password: 'admin123', name: 'Admin User', role: 'admin' },
   { id: 2, email: 'user@example.com', password: 'user123', name: 'Regular User', role: 'user' },
-  { id: 2, email: 'jeffjones@yahoo.com', password: 'Password123!', name: 'Regular User', role: 'user' }
+  { id: 3, email: 'jeffjones@yahoo.com', password: 'Password123!', name: 'Regular User', role: 'user' }
 ];
 
 // Login route
