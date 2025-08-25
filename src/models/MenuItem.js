@@ -6,6 +6,14 @@
 const menuItems = [
   { 
     id: 1, 
+    name: 'Tandoori Chicken', 
+    price: 17.99, 
+    category: 'International', 
+    image: 'tandoori_chicken.jpg', 
+    description: 'Spicy grilled chicken with a blend of Indian spices.' 
+  },
+  { 
+    id: 2, 
     name: 'Margherita Pizza', 
     price: 12.99, 
     category: 'Pizza', 
@@ -13,7 +21,7 @@ const menuItems = [
     description: 'Classic cheese and tomato pizza with fresh basil.' 
   },
   { 
-    id: 2, 
+    id: 3, 
     name: 'Classic Burger', 
     price: 9.99, 
     category: 'Burger', 
@@ -21,7 +29,7 @@ const menuItems = [
     description: 'Juicy beef patty with lettuce, tomato, and special sauce.' 
   },
   { 
-    id: 3, 
+    id: 4, 
     name: 'Spaghetti Carbonara', 
     price: 11.99, 
     category: 'Pasta', 
@@ -29,7 +37,7 @@ const menuItems = [
     description: 'Creamy pasta with bacon and parmesan cheese.' 
   },
   { 
-    id: 4, 
+    id: 5, 
     name: 'Vegetable Stir-Fry', 
     price: 10.99, 
     category: 'Vegetarian', 
@@ -37,7 +45,7 @@ const menuItems = [
     description: 'Fresh vegetables stir-fried with tofu in savory sauce.' 
   },
   { 
-    id: 5, 
+    id: 6, 
     name: 'Chicken Wings', 
     price: 8.99, 
     category: 'Appetizers', 
@@ -45,7 +53,7 @@ const menuItems = [
     description: 'Crispy chicken wings with choice of sauce: BBQ, Buffalo, or Honey Garlic.' 
   },
   { 
-    id: 6, 
+    id: 7, 
     name: 'Caesar Salad', 
     price: 7.99, 
     category: 'Salad', 

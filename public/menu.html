@@ -40,111 +40,23 @@
         <main class="flex-grow container mx-auto py-10 px-4 ml-64">
             <h1 class="text-3xl font-bold text-gray-800 mb-8">Our Menu</h1>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Menu Item 1 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="h-48 bg-gray-300 flex items-center justify-center">
-                        <img src="images/margherita_pizza.avif" alt="Margherita Pizza" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold text-gray-800">Margherita Pizza</h3>
-                        <p class="text-gray-600 mt-2">Classic cheese and tomato pizza with fresh basil.</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-gray-800 font-bold">$12.99</span>
-                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Menu Item 2 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="h-48 bg-gray-300 flex items-center justify-center">
-                        <span class="text-gray-500">Food Image</span>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold text-gray-800">Classic Burger</h3>
-                        <p class="text-gray-600 mt-2">Juicy beef patty with lettuce, tomato, and special sauce.</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-gray-800 font-bold">$9.99</span>
-                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Menu Item 3 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="h-48 bg-gray-300 flex items-center justify-center">
-                        <span class="text-gray-500">Food Image</span>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold text-gray-800">Spaghetti Carbonara</h3>
-                        <p class="text-gray-600 mt-2">Creamy pasta with bacon and parmesan cheese.</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-gray-800 font-bold">$11.99</span>
-                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Menu Item 4 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="h-48 bg-gray-300 flex items-center justify-center">
-                        <span class="text-gray-500">Food Image</span>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold text-gray-800">Vegetable Stir-Fry</h3>
-                        <p class="text-gray-600 mt-2">Fresh vegetables stir-fried with tofu in savory sauce.</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-gray-800 font-bold">$10.99</span>
-                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Menu Item 5 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="h-48 bg-gray-300 flex items-center justify-center">
-                        <span class="text-gray-500">Food Image</span>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold text-gray-800">Chicken Wings</h3>
-                        <p class="text-gray-600 mt-2">Crispy chicken wings with choice of sauce: BBQ, Buffalo, or Honey Garlic.</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-gray-800 font-bold">$8.99</span>
-                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Menu Item 6 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="h-48 bg-gray-300 flex items-center justify-center">
-                        <span class="text-gray-500">Food Image</span>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold text-gray-800">Caesar Salad</h3>
-                        <p class="text-gray-600 mt-2">Fresh romaine lettuce, croutons, parmesan cheese with Caesar dressing.</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-gray-800 font-bold">$7.99</span>
-                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
+            <!-- Menu items container - will be populated by JavaScript -->
+            <div id="menu-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Loading indicator - will be replaced by menu items -->
+                <div class="col-span-3 text-center py-8">
+                    <p class="text-gray-500">Loading menu items...</p>
                 </div>
             </div>
         </main>
     </div>
+
+    <!-- Menu JavaScript -->
+    <script src="js/menu.js"></script>
+
+
+            <!-- </div>
+        </main>
+    </div> -->
 
     <!-- Footer -->
     <div id="footer-container"></div>
