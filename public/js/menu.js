@@ -1,7 +1,74 @@
+//import { Order } from './order.js';
+
 /**
  * Menu page functionality
  * Loads menu items from the API and renders them on the page
  */
+
+/**
+ * Import the Order class from the Order.js file
+ * This is used to manage cart functionality
+ */
+
+// Initialize cart if it doesn't exist in session storage
+let cart;
+try {   
+    const savedCart = sessionStorage.getItem('cart');
+    cart = savedCart ? JSON.parse(savedCart) : {
+        items: [],
+        addItem: function(item) {
+            // Check if item already exists in cart
+            const existingItem = this.items.find(i => i.id === item.id);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                this.items.push({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: 1
+                });
+            }
+        },
+        getItems: function() {
+            return this.items;
+        },
+        getItemCount: function() {
+            return this.items.reduce((total, item) => total + item.quantity, 0);
+        },
+        getTotal: function() {
+            return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+        }
+    };
+} catch (error) {
+    console.error('Error loading cart from session storage:', error);
+    cart = {
+        items: [],
+        addItem: function(item) {
+            const existingItem = this.items.find(i => i.id === item.id);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                this.items.push({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: 1
+                });
+            }
+        },
+        getItems: function() {
+            return this.items;
+        },
+        getItemCount: function() {
+            return this.items.reduce((total, item) => total + item.quantity, 0);
+        },
+        getTotal: function() {
+            return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+        }
+    };
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // Fetch menu items from API
@@ -122,19 +189,61 @@ function createMenuItemElement(item) {
  */
 function addToCart(item) {
     console.log(`Added ${item.name} to cart`);
-    // In a real app, this would add the item to a cart state
-    // and potentially save to localStorage or send to server
-    
-    // Show a temporary notification
-    const notification = document.createElement('div');
-    notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white py-2 px-4 rounded shadow-lg';
-    notification.textContent = `Added ${item.name} to cart!`;
-    document.body.appendChild(notification);
-    
-    // Remove the notification after 3 seconds
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
+
+    // show an alert with the item details
+    alert(`Added ${item.name} to cart!`);
+
+    // Add the item to the cart object
+    cart.addItem(item);
+
+    // Save the updated cart to session storage
+    try {
+        sessionStorage.setItem('cart', JSON.stringify(cart));
+    } catch (error) {
+        console.error('Error saving cart to session storage:', error);
+    }
+
+    // Update the cart count display if it exists
+    const cartCountElement = document.getElementById('cart-count');
+    if (cartCountElement) {
+        cartCountElement.textContent = cart.getItemCount();
+        cartCountElement.classList.remove('hidden');
+    }
+
+    // Create a function to show all items in the cart
+    function showCartItems() {
+        const items = cart.getItems();
+        
+        if (items.length === 0) {
+            alert('Your cart is empty');
+            return;
+        }
+        
+        let cartMessage = 'Your cart contains:\n\n';
+        
+        items.forEach((item, index) => {
+            cartMessage += `${index + 1}. ${item.name} - $${item.price.toFixed(2)} x ${item.quantity}\n`;
+        });
+        
+        cartMessage += `\nTotal: $${cart.getTotal().toFixed(2)}`;
+        
+        alert(cartMessage);
+    }
+
+    // Create a "View Cart" button that appears after adding an item
+    const viewCartButton = document.createElement('button');
+    viewCartButton.className = 'ml-2 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition text-sm';
+    viewCartButton.textContent = 'View Cart';
+    viewCartButton.addEventListener('click', showCartItems);
+
+    // Find the cart count element's parent and append the button
+    if (cartCountElement && cartCountElement.parentElement) {
+        cartCountElement.parentElement.appendChild(viewCartButton);
+    }
+
+
+ 
+
 }
 
 /**
