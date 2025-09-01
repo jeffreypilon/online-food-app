@@ -11,8 +11,3 @@ app.listen(PORT, () => {
     console.log(`Visit http://localhost:${PORT} to access the application`);
 });
 module.exports = app;
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
-
-module.exports = app;
