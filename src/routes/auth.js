@@ -25,7 +25,9 @@ router.post('/login', (req, res) => {
     lastName: user.getLastName(),
     fullName: user.getFullName()
   };
-  
+
+  console.log("User logged in:", req.session.user);
+
   // In a real app with JWT, you'd still return the token
   // But we're using sessions here, so we just return user info
   

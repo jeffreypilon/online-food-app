@@ -39,6 +39,44 @@
 
         <!-- Main content -->
         <main class="flex-grow container mx-auto py-10 px-4 ml-64">
+            <div id="user-welcome" class="mb-4"></div>
+            <script>
+                // Check if user is logged in and display personalized welcome
+                fetch('/auth/me')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Parse data and handle potential missing properties
+                        if (data && typeof data === 'object') {
+
+                            for (const [key, value] of Object.entries(data)) {
+                                console.log(key, value);
+                            }
+
+                            let firstNameDisplay = '';
+                            let lastNameDisplay = '';
+
+                            for (const [key, value] of Object.entries(data)) {
+
+                                if (key == "data") {
+                                    firstNameDisplay = value.firstName;
+                                    lastNameDisplay = value.lastName;
+
+
+                                    // Extract firstName and lastName with fallbacks to empty strings
+                                    const firstName = firstNameDisplay || '';
+                                    const lastName = lastNameDisplay || '';
+
+                                    // Only display welcome message if at least firstName exists
+                                    if (firstName) {
+                                        document.getElementById('user-welcome').innerHTML =
+                                            `<p class="text-lg text-blue-600 font-semibold">Welcome ${firstName} ${lastName}!</p>`;
+                                    }
+                                }
+                            }
+                        }
+                    })
+                    .catch(error => console.error('Error fetching user data:', error));
+            </script>
             <div class="text-center mb-10">
                 <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome to the Online Food Ordering Application</h2>
                 <p class="text-gray-600 max-w-2xl mx-auto">Order your favorite food with just a few clicks. Browse our menu, add items to your cart, and enjoy a delicious meal delivered right to your doorstep.</p>
