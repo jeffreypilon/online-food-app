@@ -194,7 +194,7 @@ function addToCart(item) {
     alert(`Added ${item.name} to cart!`);
 
     // Add the item to the cart object
-    cart.addItem(item);
+    //cart.addItem(item);
 
     // Save the updated cart to session storage
     try {
