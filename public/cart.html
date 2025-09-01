@@ -21,45 +21,20 @@
             });
     </script>
 
-    <div class="flex flex-grow">
-        <!-- Vertical Navigation Bar -->
-        <div class="w-64 bg-gray-800 text-white">
-            <nav class="mt-5 px-2">
-                <h2 class="text-lg font-medium mb-4 px-4">Menu</h2>
-                <ul>
-                    <li class="mb-2">
-                        <a href="/about" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
-                            <span class="mr-2">📄</span> About
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="/services" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
-                            <span class="mr-2">🍴</span> Services
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="/orders" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
-                            <span class="mr-2">📦</span> Your Orders
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="/wishlist" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
-                            <span class="mr-2">❤️</span> Wishlists
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="/cart" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors bg-gray-700">
-                            <span class="mr-2">🛒</span> Cart
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="/contact" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
-                            <span class="mr-2">📞</span> Contact
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+    <div class="flex flex-grow mt-16 mb-16">
+        <!-- Left Navigation Bar -->
+        <div id="left-nav-container"></div>
+        <script>
+            fetch('/left-nav-bar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('left-nav-container').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading left navigation bar:', error);
+                    document.getElementById('left-nav-container').innerHTML = '<p class="text-red-500 p-4">Error loading navigation</p>';
+                });
+        </script>
 
         <!-- Main content -->
         <main class="flex-grow container mx-auto py-10 px-4">
