@@ -41,77 +41,9 @@
             <h1 class="text-3xl font-bold text-gray-800 mb-8">Your Cart</h1>
             
             <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead>
-                            <tr class="text-left border-b border-gray-300">
-                                <th class="pb-4">Item</th>
-                                <th class="pb-4">Quantity</th>
-                                <th class="pb-4">Price</th>
-                                <th class="pb-4">Total</th>
-                                <th class="pb-4">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Cart Item 1 -->
-                            <tr class="border-b border-gray-200">
-                                <td class="py-4">
-                                    <div class="flex items-center">
-                                        <img src="images/pizza.jpg" alt="Pizza" class="w-16 h-16 object-cover rounded mr-4">
-                                        <span class="font-medium">Margherita Pizza</span>
-                                    </div>
-                                </td>
-                                <td class="py-4">
-                                    <div class="flex items-center">
-                                        <button class="bg-gray-200 px-2 rounded-l">-</button>
-                                        <input type="text" value="1" class="w-12 text-center border-t border-b border-gray-200">
-                                        <button class="bg-gray-200 px-2 rounded-r">+</button>
-                                    </div>
-                                </td>
-                                <td class="py-4">$12.99</td>
-                                <td class="py-4 font-medium">$12.99</td>
-                                <td class="py-4">
-                                    <button class="text-red-500 hover:text-red-700">Remove</button>
-                                </td>
-                            </tr>
-                            
-                            <!-- Cart Item 2 -->
-                            <tr>
-                                <td class="py-4">
-                                    <div class="flex items-center">
-                                        <img src="images/pasta.jpg" alt="Pasta" class="w-16 h-16 object-cover rounded mr-4">
-                                        <span class="font-medium">Spaghetti Carbonara</span>
-                                    </div>
-                                </td>
-                                <td class="py-4">
-                                    <div class="flex items-center">
-                                        <button class="bg-gray-200 px-2 rounded-l">-</button>
-                                        <input type="text" value="2" class="w-12 text-center border-t border-b border-gray-200">
-                                        <button class="bg-gray-200 px-2 rounded-r">+</button>
-                                    </div>
-                                </td>
-                                <td class="py-4">$11.99</td>
-                                <td class="py-4 font-medium">$23.98</td>
-                                <td class="py-4">
-                                    <button class="text-red-500 hover:text-red-700">Remove</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="mt-8 flex justify-between items-center">
-                    <div class="text-lg font-bold">
-                        Total: $36.97
-                    </div>
-                    <div class="space-x-4">
-                        <a href="/menu" class="inline-block bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300 transition">
-                            Continue Shopping
-                        </a>
-                        <a href="/checkout" class="inline-block bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
-                            Checkout
-                        </a>
-                    </div>
+                <div id="cart-container">
+                    <!-- Cart content will be dynamically loaded here -->
+                    <p class="text-gray-500 text-center py-8">Loading cart items...</p>
                 </div>
             </div>
         </main>
@@ -129,6 +61,232 @@
                 console.error('Error loading footer:', error);
                 document.getElementById('footer-container').innerHTML = '<p class="text-red-500 p-4">Error loading footer</p>';
             });
+    </script>
+
+    <!-- Cart JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartContainer = document.getElementById('cart-container');
+            
+            // Step 1: Get cart from sessionStorage
+            const savedCart = sessionStorage.getItem('cart');
+            if (!savedCart) {
+                // Display empty cart message
+                cartContainer.innerHTML = `
+                    <div class="text-center py-8">
+                        <p class="text-gray-500 mb-4">Your cart is empty</p>
+                        <a href="/menu" class="inline-block bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                            Browse Menu
+                        </a>
+                    </div>
+                `;
+                return; // Skip remaining steps
+            }
+            
+            try {
+                // Parse the cart data
+                const cartData = JSON.parse(savedCart);
+                const cartItems = cartData.items || [];
+                
+                if (cartItems.length === 0) {
+                    // Cart exists but is empty
+                    cartContainer.innerHTML = `
+                        <div class="text-center py-8">
+                            <p class="text-gray-500 mb-4">Your cart is empty</p>
+                            <a href="/menu" class="inline-block bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                                Browse Menu
+                            </a>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Step 2: Create cartMenuItems array
+                let cartMenuItems = [];
+                
+                // Step 3: Load menu item details for each cart item
+                // Since getItemById is a server-side function, we need to fetch items from the API
+                const itemPromises = cartItems.map(item => {
+                    return fetch(`/api/menu-items/${item.id}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Add menu item details and quantity from cart
+                                const menuItem = data.data;
+                                menuItem.quantity = item.quantity;
+                                cartMenuItems.push(menuItem);
+                            }
+                            return data;
+                        });
+                });
+                
+                // Wait for all item details to be fetched
+                Promise.all(itemPromises)
+                    .then(() => {
+                        // Once all items are loaded, render the cart
+                        renderCart(cartMenuItems);
+                    })
+                    .catch(error => {
+                        console.error('Error loading cart items:', error);
+                        cartContainer.innerHTML = `
+                            <div class="text-center py-8">
+                                <p class="text-red-500 mb-4">Error loading cart items</p>
+                                <button onclick="location.reload()" class="inline-block bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                                    Try Again
+                                </button>
+                            </div>
+                        `;
+                    });
+            } catch (error) {
+                console.error('Error parsing cart data:', error);
+                cartContainer.innerHTML = `
+                    <div class="text-center py-8">
+                        <p class="text-red-500 mb-4">Error loading cart</p>
+                        <button onclick="location.reload()" class="inline-block bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                            Try Again
+                        </button>
+                    </div>
+                `;
+            }
+        });
+        
+        // Function to render cart items
+        function renderCart(cartItems) {
+            const cartContainer = document.getElementById('cart-container');
+            
+            // Calculate cart total
+            const cartTotal = cartItems.reduce((total, item) => {
+                return total + (item.price * item.quantity);
+            }, 0);
+            
+            // Generate cart HTML
+            let cartHTML = `
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="text-left border-b border-gray-300">
+                                <th class="pb-4">Item</th>
+                                <th class="pb-4">Quantity</th>
+                                <th class="pb-4">Price</th>
+                                <th class="pb-4">Total</th>
+                                <th class="pb-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            // Add each cart item
+            cartItems.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                cartHTML += `
+                    <tr class="border-b border-gray-200">
+                        <td class="py-4">
+                            <div class="flex items-center">
+                                <img src="images/${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded mr-4">
+                                <span class="font-medium">${item.name}</span>
+                            </div>
+                        </td>
+                        <td class="py-4">
+                            <div class="flex items-center">
+                                <button class="bg-gray-200 px-2 rounded-l" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">-</button>
+                                <input type="text" value="${item.quantity}" class="w-12 text-center border-t border-b border-gray-200" readonly>
+                                <button class="bg-gray-200 px-2 rounded-r" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+                            </div>
+                        </td>
+                        <td class="py-4">$${item.price.toFixed(2)}</td>
+                        <td class="py-4 font-medium">$${itemTotal.toFixed(2)}</td>
+                        <td class="py-4">
+                            <button class="text-red-500 hover:text-red-700" onclick="removeItem(${item.id})">Remove</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            // Close table and add cart footer
+            cartHTML += `
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-8 flex justify-between items-center">
+                    <div class="text-lg font-bold">
+                        Total: $${cartTotal.toFixed(2)}
+                    </div>
+                    <div class="space-x-4">
+                        <a href="/menu" class="inline-block bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300 transition">
+                            Continue Shopping
+                        </a>
+                        <a href="/checkout" class="inline-block bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                            Checkout
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            // Update cart container with generated HTML
+            cartContainer.innerHTML = cartHTML;
+        }
+        
+        // Function to update item quantity
+        function updateQuantity(itemId, newQuantity) {
+            if (newQuantity <= 0) {
+                // Remove item if quantity is 0 or less
+                removeItem(itemId);
+                return;
+            }
+            
+            try {
+                // Get current cart
+                const savedCart = sessionStorage.getItem('cart');
+                if (!savedCart) return;
+                
+                const cartData = JSON.parse(savedCart);
+                const cartItems = cartData.items || [];
+                
+                // Find the item and update quantity
+                const itemIndex = cartItems.findIndex(item => item.id === itemId);
+                if (itemIndex !== -1) {
+                    cartItems[itemIndex].quantity = newQuantity;
+                    
+                    // Save updated cart
+                    sessionStorage.setItem('cart', JSON.stringify({
+                        items: cartItems
+                    }));
+                    
+                    // Reload the page to reflect changes
+                    location.reload();
+                }
+            } catch (error) {
+                console.error('Error updating quantity:', error);
+                alert('Failed to update item quantity');
+            }
+        }
+        
+        // Function to remove item from cart
+        function removeItem(itemId) {
+            try {
+                // Get current cart
+                const savedCart = sessionStorage.getItem('cart');
+                if (!savedCart) return;
+                
+                const cartData = JSON.parse(savedCart);
+                const cartItems = cartData.items || [];
+                
+                // Filter out the item to remove
+                const updatedItems = cartItems.filter(item => item.id !== itemId);
+                
+                // Save updated cart
+                sessionStorage.setItem('cart', JSON.stringify({
+                    items: updatedItems
+                }));
+                
+                // Reload the page to reflect changes
+                location.reload();
+            } catch (error) {
+                console.error('Error removing item:', error);
+                alert('Failed to remove item from cart');
+            }
+        }
     </script>
 </body>
 </html>
