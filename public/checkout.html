@@ -21,48 +21,23 @@
             });
     </script>
 
-    <div class="flex flex-grow">
-        <!-- Vertical Navigation Bar -->
-        <div class="w-64 bg-gray-800 text-white">
-            <nav class="mt-5 px-2">
-                <h2 class="text-lg font-medium mb-4 px-4">Menu</h2>
-                <ul>
-                    <li class="mb-2">
-                        <a href="/about" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
-                            <span class="mr-2">📄</span> About
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="/services" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
-                            <span class="mr-2">🍴</span> Services
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="/orders" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
-                            <span class="mr-2">📦</span> Your Orders
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="/wishlist" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
-                            <span class="mr-2">❤️</span> Wishlists
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="/cart" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
-                            <span class="mr-2">🛒</span> Cart
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="/contact" class="block px-4 py-2 rounded hover:bg-gray-700 transition-colors">
-                            <span class="mr-2">📞</span> Contact
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+    <div class="flex flex-grow mt-16 mb-16">
+        <!-- Left Navigation Bar -->
+        <div id="left-nav-container"></div>
+        <script>
+            fetch('/left-nav-bar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('left-nav-container').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading left navigation bar:', error);
+                    document.getElementById('left-nav-container').innerHTML = '<p class="text-red-500 p-4">Error loading navigation</p>';
+                });
+        </script>
 
-        <!-- Main content -->
-        <main class="flex-grow container mx-auto py-10 px-4">
+        <!-- Main content - add ml-64 class to align with other pages -->
+        <main class="flex-grow container mx-auto py-10 px-4 ml-64">
             <h1 class="text-3xl font-bold text-gray-800 mb-8">Checkout</h1>
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -71,29 +46,8 @@
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <h2 class="text-xl font-bold mb-4">Order Summary</h2>
                         
-                        <div class="space-y-4 mb-6">
-                            <div class="flex justify-between">
-                                <span>Margherita Pizza x1</span>
-                                <span>$12.99</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Spaghetti Carbonara x2</span>
-                                <span>$23.98</span>
-                            </div>
-                            <div class="border-t border-gray-200 pt-4">
-                                <div class="flex justify-between font-medium">
-                                    <span>Subtotal</span>
-                                    <span>$36.97</span>
-                                </div>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Delivery Fee</span>
-                                <span>$3.99</span>
-                            </div>
-                            <div class="flex justify-between font-bold text-lg border-t border-gray-200 pt-4">
-                                <span>Total</span>
-                                <span>$40.96</span>
-                            </div>
+                        <div id="order-summary" class="space-y-4 mb-6">
+                            <p class="text-gray-500 text-center">Loading order summary...</p>
                         </div>
                     </div>
                 </div>
@@ -103,7 +57,7 @@
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <h2 class="text-xl font-bold mb-6">Delivery Information</h2>
                         
-                        <form>
+                        <form id="checkout-form">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                                 <div>
                                     <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
@@ -149,7 +103,7 @@
                                 <a href="/cart" class="bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300 transition">
                                     Back to Cart
                                 </a>
-                                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                                <button type="submit" id="place-order-btn" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
                                     Place Order
                                 </button>
                             </div>
@@ -172,6 +126,211 @@
                 console.error('Error loading footer:', error);
                 document.getElementById('footer-container').innerHTML = '<p class="text-red-500 p-4">Error loading footer</p>';
             });
+    </script>
+
+    <!-- Checkout JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if cart exists in sessionStorage
+            const savedCart = sessionStorage.getItem('cart');
+            if (!savedCart) {
+                // Redirect to cart page if no cart exists
+                window.location.href = '/cart';
+                return;
+            }
+            
+            try {
+                // Parse cart data
+                const cartData = JSON.parse(savedCart);
+                const cartItems = cartData.items || [];
+                
+                if (cartItems.length === 0) {
+                    // Redirect to cart page if cart is empty
+                    window.location.href = '/cart';
+                    return;
+                }
+                
+                // Load menu item details for each cart item
+                const itemPromises = cartItems.map(item => {
+                    return fetch(`/api/menu-items/${item.id}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                return {
+                                    ...data.data,
+                                    quantity: item.quantity
+                                };
+                            }
+                            throw new Error(`Failed to load item ${item.id}`);
+                        });
+                });
+                
+                // Wait for all item details to be fetched
+                Promise.all(itemPromises)
+                    .then(items => {
+                        // Render order summary
+                        renderOrderSummary(items);
+                        
+                        // Pre-fill form if user is logged in
+                        populateUserInfo();
+                        
+                        // Set up form submission
+                        setupCheckoutForm(items);
+                    })
+                    .catch(error => {
+                        console.error('Error loading order items:', error);
+                        alert('Error loading your order. Please try again.');
+                        window.location.href = '/cart';
+                    });
+            } catch (error) {
+                console.error('Error parsing cart data:', error);
+                alert('Error loading your cart. Please try again.');
+                window.location.href = '/cart';
+            }
+        });
+        
+        // Function to render order summary
+        function renderOrderSummary(items) {
+            const orderSummary = document.getElementById('order-summary');
+            
+            // Calculate subtotal
+            const subtotal = items.reduce((total, item) => {
+                return total + (item.price * item.quantity);
+            }, 0);
+            
+            // Fixed delivery fee
+            const deliveryFee = 3.99;
+            
+            // Calculate total
+            const total = subtotal + deliveryFee;
+            
+            // Generate HTML for order summary
+            let summaryHTML = '';
+            
+            // Add each item
+            items.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                summaryHTML += `
+                    <div class="flex justify-between">
+                        <span>${item.name} x${item.quantity}</span>
+                        <span>$${itemTotal.toFixed(2)}</span>
+                    </div>
+                `;
+            });
+            
+            // Add subtotal, delivery fee, and total
+            summaryHTML += `
+                <div class="border-t border-gray-200 pt-4">
+                    <div class="flex justify-between font-medium">
+                        <span>Subtotal</span>
+                        <span>$${subtotal.toFixed(2)}</span>
+                    </div>
+                </div>
+                <div class="flex justify-between">
+                    <span>Delivery Fee</span>
+                    <span>$${deliveryFee.toFixed(2)}</span>
+                </div>
+                <div class="flex justify-between font-bold text-lg border-t border-gray-200 pt-4">
+                    <span>Total</span>
+                    <span>$${total.toFixed(2)}</span>
+                </div>
+            `;
+            
+            // Update the order summary element
+            orderSummary.innerHTML = summaryHTML;
+        }
+        
+        // Function to populate user information if available
+        function populateUserInfo() {
+            fetch('/auth/me')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Not authenticated');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success && data.data) {
+                        // Pre-fill form with user data
+                        const user = data.data;
+                        
+                        if (user.firstName) {
+                            document.getElementById('firstName').value = user.firstName;
+                        }
+                        
+                        if (user.lastName) {
+                            document.getElementById('lastName').value = user.lastName;
+                        }
+                        
+                        if (user.email) {
+                            document.getElementById('email').value = user.email;
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.log('User not authenticated:', error.message);
+                    // Not authenticated, form will be empty
+                });
+        }
+        
+        // Function to set up checkout form submission
+        function setupCheckoutForm(items) {
+            const checkoutForm = document.getElementById('checkout-form');
+            
+            checkoutForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                // Get form data
+                const formData = new FormData(checkoutForm);
+                const orderData = {
+                    customerInfo: {
+                        firstName: formData.get('firstName'),
+                        lastName: formData.get('lastName'),
+                        email: formData.get('email'),
+                        phone: formData.get('phone'),
+                        address: formData.get('address')
+                    },
+                    paymentMethod: formData.get('paymentMethod'),
+                    items: items.map(item => ({
+                        id: item.id,
+                        name: item.name,
+                        price: item.price,
+                        quantity: item.quantity
+                    })),
+                    subtotal: items.reduce((total, item) => total + (item.price * item.quantity), 0),
+                    deliveryFee: 3.99,
+                    total: items.reduce((total, item) => total + (item.price * item.quantity), 0) + 3.99
+                };
+                
+                // Send order to server
+                fetch('/api/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Clear cart from sessionStorage
+                        sessionStorage.removeItem('cart');
+                        
+                        // Show success message
+                        alert('Order placed successfully! Your order number is: ' + data.data.id);
+                        
+                        // Redirect to confirmation page or home
+                        window.location.href = '/';
+                    } else {
+                        throw new Error(data.message || 'Failed to place order');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error placing order:', error);
+                    alert('Error placing your order: ' + error.message);
+                });
+            });
+        }
     </script>
 </body>
 </html>
