@@ -237,26 +237,4 @@ function showError(message) {
         </div>
     `;
 }
-    // if (cartCountElement && cartCountElement.parentElement) {
-    //     cartCountElement.parentElement.appendChild(viewCartButton);
-    // }
 
-
-
-
-/**
- * Shows an error message on the page
- * @param {string} message - Error message to display
- */
-// function showError(message) {
-//     const menuContainer = document.getElementById('menu-container');
-//     menuContainer.innerHTML = `
-//         <div class="col-span-3 text-center py-8">
-//             <p class="text-red-500">${message}</p>
-//             <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" 
-//                     onclick="location.reload()">
-//                 Try Again
-//             </button>
-//         </div>
-//     `;
-// }
