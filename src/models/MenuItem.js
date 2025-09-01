@@ -17,7 +17,7 @@ const menuItems = [
     name: 'Margherita Pizza', 
     price: 12.99, 
     category: 'Pizza', 
-    image: 'margherita_pizza.avif', 
+    image: 'pizza.jpg', 
     description: 'Classic cheese and tomato pizza with fresh basil.' 
   },
   { 

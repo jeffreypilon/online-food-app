@@ -10,63 +10,50 @@
  * This is used to manage cart functionality
  */
 
-// Initialize cart if it doesn't exist in session storage
+// Create cart object with methods
+const cartFunctions = {
+    addItem: function(item) {
+        const existingItem = this.items.find(i => i.id === item.id);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            this.items.push({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+                quantity: 1
+            });
+        }
+    },
+    getItems: function() {
+        return this.items;
+    },
+    getItemCount: function() {
+        return this.items.reduce((total, item) => total + item.quantity, 0);
+    },
+    getTotal: function() {
+        return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+    }
+};
+
+// Initialize cart
 let cart;
 try {   
     const savedCart = sessionStorage.getItem('cart');
-    cart = savedCart ? JSON.parse(savedCart) : {
-        items: [],
-        addItem: function(item) {
-            // Check if item already exists in cart
-            const existingItem = this.items.find(i => i.id === item.id);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                this.items.push({
-                    id: item.id,
-                    name: item.name,
-                    price: item.price,
-                    quantity: 1
-                });
-            }
-        },
-        getItems: function() {
-            return this.items;
-        },
-        getItemCount: function() {
-            return this.items.reduce((total, item) => total + item.quantity, 0);
-        },
-        getTotal: function() {
-            return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
-        }
-    };
+    if (savedCart) {
+        // Create cart with data from session storage but with functions from cartFunctions
+        const cartData = JSON.parse(savedCart);
+        cart = Object.create(cartFunctions);
+        cart.items = cartData.items || [];
+    } else {
+        // Create new cart with empty items array
+        cart = Object.create(cartFunctions);
+        cart.items = [];
+    }
 } catch (error) {
     console.error('Error loading cart from session storage:', error);
-    cart = {
-        items: [],
-        addItem: function(item) {
-            const existingItem = this.items.find(i => i.id === item.id);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                this.items.push({
-                    id: item.id,
-                    name: item.name,
-                    price: item.price,
-                    quantity: 1
-                });
-            }
-        },
-        getItems: function() {
-            return this.items;
-        },
-        getItemCount: function() {
-            return this.items.reduce((total, item) => total + item.quantity, 0);
-        },
-        getTotal: function() {
-            return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
-        }
-    };
+    cart = Object.create(cartFunctions);
+    cart.items = [];
 }
 
 
@@ -188,20 +175,23 @@ function createMenuItemElement(item) {
  * @param {Object} item - Menu item to add to cart
  */
 function addToCart(item) {
-    console.log(`Added ${item.name} to cart`);
-
-    // show an alert with the item details
-    alert(`Added ${item.name} to cart!`);
+    console.log(`Adding ${item.name} to cart`);
 
     // Add the item to the cart object
-    //cart.addItem(item);
+    cart.addItem(item);
 
     // Save the updated cart to session storage
     try {
-        sessionStorage.setItem('cart', JSON.stringify(cart));
+        // Only save the data part, not the methods
+        sessionStorage.setItem('cart', JSON.stringify({
+            items: cart.items
+        }));
     } catch (error) {
         console.error('Error saving cart to session storage:', error);
     }
+
+    // Show a notification instead of an alert
+    showNotification(`Added ${item.name} to cart!`);
 
     // Update the cart count display if it exists
     const cartCountElement = document.getElementById('cart-count');
@@ -209,41 +199,26 @@ function addToCart(item) {
         cartCountElement.textContent = cart.getItemCount();
         cartCountElement.classList.remove('hidden');
     }
+}
 
-    // Create a function to show all items in the cart
-    function showCartItems() {
-        const items = cart.getItems();
-        
-        if (items.length === 0) {
-            alert('Your cart is empty');
-            return;
-        }
-        
-        let cartMessage = 'Your cart contains:\n\n';
-        
-        items.forEach((item, index) => {
-            cartMessage += `${index + 1}. ${item.name} - $${item.price.toFixed(2)} x ${item.quantity}\n`;
-        });
-        
-        cartMessage += `\nTotal: $${cart.getTotal().toFixed(2)}`;
-        
-        alert(cartMessage);
-    }
-
-    // Create a "View Cart" button that appears after adding an item
-    const viewCartButton = document.createElement('button');
-    viewCartButton.className = 'ml-2 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition text-sm';
-    viewCartButton.textContent = 'View Cart';
-    viewCartButton.addEventListener('click', showCartItems);
-
-    // Find the cart count element's parent and append the button
-    if (cartCountElement && cartCountElement.parentElement) {
-        cartCountElement.parentElement.appendChild(viewCartButton);
-    }
-
-
- 
-
+/**
+ * Shows a notification message
+ * @param {string} message - Message to display
+ */
+function showNotification(message) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white py-2 px-4 rounded shadow-lg z-50';
+    notification.textContent = message;
+    
+    // Add to document
+    document.body.appendChild(notification);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        notification.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
 }
 
 /**
@@ -262,3 +237,26 @@ function showError(message) {
         </div>
     `;
 }
+    // if (cartCountElement && cartCountElement.parentElement) {
+    //     cartCountElement.parentElement.appendChild(viewCartButton);
+    // }
+
+
+
+
+/**
+ * Shows an error message on the page
+ * @param {string} message - Error message to display
+ */
+// function showError(message) {
+//     const menuContainer = document.getElementById('menu-container');
+//     menuContainer.innerHTML = `
+//         <div class="col-span-3 text-center py-8">
+//             <p class="text-red-500">${message}</p>
+//             <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" 
+//                     onclick="location.reload()">
+//                 Try Again
+//             </button>
+//         </div>
+//     `;
+// }
