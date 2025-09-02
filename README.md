@@ -1,5 +1,24 @@
 # ONLINE FOOD APP
 
+
+## GitHub
+
+Project source code may be cloned from the following GitHub repository:
+
+https://github.com/jeffreypilon/online-food-app
+
+## Login
+
+Login with the following credentials:
+
+email: admin@example.com
+password: Admin123!
+
+email: jeffjones@yahoo.com
+password: Password123!
+
+
+
 ## Project Overview
 
 The ONLINE FOOD APP is a web-based application designed to streamline the food ordering process. Users can browse menus, place orders, and make payments online. The application focuses on creating a responsive interface for users to browse food items, place orders, and manage profiles, while administrators handle menu updates and order tracking.
