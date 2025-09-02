@@ -9,8 +9,7 @@ The ONLINE FOOD APP is a web-based application designed to streamline the food o
 - **Responsive Menu Interface**: Browse menu items with detailed descriptions and images
 - **Shopping Cart Management**: Add, update quantities, and remove items from your cart
 - **Checkout System**: Complete orders with delivery information and payment options
-- **User Authentication**: Secure registration and login functionality
-- **Admin Dashboard**: Manage users, menu items, and track orders
+- **User Authentication**: Secure login functionality
 - **Persistent Cart**: Cart data is preserved between sessions using browser storage
 
 ## Technology Stack
@@ -36,7 +35,6 @@ The project follows a structured directory layout for better organization:
 │   ├── menu.html              # Menu display page
 │   ├── cart.html              # Shopping cart page
 │   ├── checkout.html          # Order checkout page
-│   ├── admin.html             # Admin dashboard
 │   ├── header.html            # Common header component
 │   └── footer.html            # Common footer component
 ├── src/                        # Backend source code
